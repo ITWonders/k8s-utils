@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/codeskyblue/go-sh"
 	"os"
 	"os/exec"
 	"regexp"
@@ -26,32 +25,6 @@ func main() {
 	}
 }
 
-func kuget() ([]byte, error) {
-	fmt.Println("Retriving kind: " + kind)
-	session := sh.NewSession()
-	return session.Command("kubectl", "get", kind, "-o", "wide").
-		Command("awk", `{ print $1 }`).
-		Command("tail", "-n", "+2").
-		Output()
-}
-
-func getUserChoice(output string) string {
-	// split the result based on newline
-	re := regexp.MustCompile(`\n`)
-	result := re.Split(output, -1)
-	result = result[0 : len(result)-1]
-
-	for k, v := range result {
-		fmt.Printf("%d: %s\n", k, v)
-	}
-
-	fmt.Printf("\n\nChoose one number to ssh: ")
-	var chosen int
-	fmt.Scanf("%d", &chosen)
-
-	return result[chosen]
-}
-
 // check if a particular container/pods come with bash shell
 func isBashNotExist(mystr string) bool {
 	containers := []string{"ecv-go", "ecv-storage"}
@@ -67,7 +40,7 @@ func isBashNotExist(mystr string) bool {
 }
 
 func kushell() {
-	lines, err := kuget()
+	lines, err := Kuget(kind)
 	shelltype := "/bin/bash"
 
 	if err != nil {
@@ -75,7 +48,7 @@ func kushell() {
 		return
 	}
 
-	selected := getUserChoice(string(lines))
+	selected := GetUserChoice(string(lines))
 	if isBashNotExist(selected) {
 		shelltype = "/bin/sh"
 	}
@@ -90,14 +63,14 @@ func kushell() {
 }
 
 func gcloudssh() {
-	lines, err := kuget()
+	lines, err := Kuget(kind)
 
 	if err != nil {
 		fmt.Println("error: ", err)
 		return
 	}
 
-	selected := getUserChoice(string(lines))
+	selected := GetUserChoice(string(lines))
 	mycommand = append(mycommand, selected)
 
 	fmt.Println(strings.Join(mycommand, " "))
