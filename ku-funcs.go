@@ -36,7 +36,7 @@ func GetUserChoice(output string) string {
 		fmt.Printf("%d: %s\n", k, v)
 	}
 
-	fmt.Printf("\n\nChoose one number to ssh: ")
+	fmt.Printf("\n\nChoose one number (will be copied): ")
 	var chosen int
 	fmt.Scanf("%d", &chosen)
 
