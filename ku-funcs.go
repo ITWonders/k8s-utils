@@ -7,6 +7,12 @@ import (
 	sh "github.com/codeskyblue/go-sh"
 )
 
+// ShellNew create new shell session and ready to take new command
+func ShellNew() *sh.Session {
+	return sh.NewSession()
+}
+
+// Kuget exec "kubectl get xxx"
 func Kuget(kind string) ([]byte, error) {
 	fmt.Println("Retriving kind: " + kind)
 	session := sh.NewSession()
@@ -26,6 +32,7 @@ func Kuget(kind string) ([]byte, error) {
 		Output()
 }
 
+// GetUserChoice returns choice of user
 func GetUserChoice(output string) string {
 	// split the result based on newline
 	re := regexp.MustCompile(`\n`)

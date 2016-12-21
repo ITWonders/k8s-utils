@@ -9,7 +9,7 @@ import (
 
 func main() {
 	var mykind string
-	var myexec string
+	myexec := "kubectl logs -f "
 
 	// provided myexec to run
 	if len(os.Args) == 2 {
@@ -34,6 +34,11 @@ func main() {
 	fmt.Println(text)
 
 	if myexec != "" {
-		fmt.Println(myexec)
+		myparams := []interface{}{"logs", "-f", text}
+		fmt.Print("kubectl ")
+		fmt.Println(myparams)
+		ShellNew().Command("kubectl", myparams...).Output()
+	} else {
+		fmt.Println("no command to run")
 	}
 }
