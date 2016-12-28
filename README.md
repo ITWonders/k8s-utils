@@ -3,6 +3,12 @@
 - tested on google cloud platform
 - Note: nothing fancy or comprehensive stuff here, only so simple tool to save you some keystoke and repeated copy using mouse
 
+## Compile
+```
+make ku
+make kushell
+```
+
 ## Example usage of copying pod name to clipboard
 - to copy the pod name to clipboard, so that you can use it with other command
 ```
