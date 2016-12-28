@@ -9,7 +9,9 @@ import (
 
 func main() {
 	var mykind string
-	myexec := "kubectl logs -f "
+	myparams := make([]interface{}, 20)
+	kubectl := "kubectl"
+	myexec := kubectl + "logs -f "
 
 	// provided myexec to run
 	if len(os.Args) == 2 {
@@ -29,16 +31,28 @@ func main() {
 
 	userChoice := GetUserChoice(string(output))
 
-	clipboard.WriteAll(userChoice)
-	text, _ := clipboard.ReadAll()
-	fmt.Println(text)
-
 	if myexec != "" {
-		myparams := []interface{}{"logs", "-f", text}
-		fmt.Print("kubectl ")
-		fmt.Println(myparams)
-		ShellNew().Command("kubectl", myparams...).Output()
+		myparams = []interface{}{"logs", "-f", userChoice}
+		// fmt.Print("kubectl ")
+		// fmt.Println(myparams)
+		// out, err := ShellNew().Command("kubectl", myparams...).CombinedOutput()
+		// if err != nil {
+		// 	fmt.Println(err)
+		// } else {
+		// 	fmt.Println(string(out))
+		// }
 	} else {
 		fmt.Println("no command to run")
 	}
+
+	// copy to clipboard
+	myparamstr := " "
+	for _, v := range myparams {
+		if str, ok := v.(string); ok {
+			myparamstr += str + " "
+		}
+	}
+	clipboard.WriteAll(userChoice)
+	// text, _ := clipboard.ReadAll()
+	fmt.Println(kubectl + myparamstr)
 }
