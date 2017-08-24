@@ -27,7 +27,7 @@ func main() {
 
 // check if a particular container/pods come with bash shell
 func isBashNotExist(mystr string) bool {
-	containers := []string{"ecv-go", "ecv-storage"}
+	containers := []string{"ecv-go", "ecv-storage", "go-", "myfuse-"}
 
 	for _, v := range containers {
 		var re = regexp.MustCompile(v)
